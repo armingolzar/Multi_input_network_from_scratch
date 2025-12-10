@@ -2,6 +2,7 @@ import tensorflow as tf
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
+from sklearn.model_selection import train_test_split
 import glob
 
 
@@ -25,3 +26,30 @@ bathroom_paths = tf.constant(bathroom_paths)
 bedroom_paths = tf.constant(bedroom_paths)
 kitchen_paths = tf.constant(kitchen_paths)
 frontal_paths = tf.constant(frontal_paths)
+
+
+train_idx, test_idx = train_test_split(range(len(labels)), test_size=0.2, random_state=42, shuffle=False)
+
+def select_split(tensor, indices):
+    return tf.gather(tensor, indices)
+
+train_paths = {
+                "tabular" : select_split(tabular_data, train_idx),
+                "bathroom" : select_split(bathroom_paths, train_idx),
+                "bedroom" : select_split(bedroom_paths, train_idx),
+                "kitchen" : select_split(kitchen_paths, train_idx),
+                "frontal" : select_split(frontal_paths, train_idx)
+}
+
+train_labels = select_split(labels, train_idx)
+
+test_paths = {
+                "tabular" : select_split(tabular_data, test_idx),
+                "bathroom" : select_split(bathroom_paths, test_idx),
+                "bedroom" : select_split(bedroom_paths, test_idx),
+                "kitchen" : select_split(kitchen_paths, test_idx),
+                "frontal" : select_split(frontal_paths, test_idx)
+}
+
+test_labels = select_split(labels, test_idx)
+
