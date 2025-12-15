@@ -19,6 +19,9 @@ bedroom_paths = sorted(glob.glob("..\\data\\house_dataset\\*bedroom*.jpg"))
 kitchen_paths = sorted(glob.glob("..\\data\\house_dataset\\*kitchen*.jpg"))
 frontal_paths = sorted(glob.glob("..\\data\\house_dataset\\*frontal*.jpg"))
 
+n_samples = len(labels)
+assert all(len(x) == n_samples for x in [bathroom_paths, bedroom_paths, kitchen_paths, frontal_paths]), "Image count mismatch!"
+
 
 tabular_data = tf.constant(tabular_data)
 labels = tf.constant(labels)
@@ -52,4 +55,6 @@ test_paths = {
 }
 
 test_labels = select_split(labels, test_idx)
+
+
 
