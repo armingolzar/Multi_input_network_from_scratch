@@ -85,5 +85,12 @@ def prerocess(tabular, bath, bed, kitch, front, label):
 
     return {"tabular" : tabular, "bathroom" : bath, "bedroom" : bed, "kitchen" : kitch, "frontal" : front}, label
 
+# TF.DATA PIPLINES
+
+train_ds = tf.data.Dataset.from_tensor_slices((train_data["tabular"], train_data["bathroom"], train_data["bedroom"], train_data["kitchen"], train_data["frontal"], train_labels))
+train_ds = (train_ds.map(prerocess, num_parallel_calls=tf.data.AUTOTUNE).shuffle(512).batch(32).prefetch(tf.data.AUTOTUNE))
+
+test_ds = tf.data.Dataset.from_tensor_slices((test_data["tabular"], test_data["bathroom"], test_data["bedroom"], test_data["kitchen"], test_data["frontal"], test_labels))
+test_ds = (test_ds.map(prerocess, num_parallel_calls=tf.data.AUTOTUNE).batch(32).prefetch(tf.data.AUTOTUNE))
 
 
