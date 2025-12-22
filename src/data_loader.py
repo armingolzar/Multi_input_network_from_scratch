@@ -1,7 +1,6 @@
 import tensorflow as tf 
 import numpy as np
 import pandas as pd
-from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.model_selection import train_test_split
 import glob
 
@@ -65,6 +64,12 @@ tab_std = tf.where(tab_std == 0, 1.0, tab_std)
 label_min = tf.reduce_min(train_labels)
 label_max = tf.reduce_max(train_labels)
 label_range = tf.where(label_max - label_min == 0, 1.0, label_max - label_min)
+
+# print(tab_mean, "\n")
+# print(tab_std, "\n")
+# print(label_min, "\n")
+# print(label_max, "\n")
+# print(label_range)
 
 # Preprocessing Functions
 
