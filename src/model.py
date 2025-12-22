@@ -38,3 +38,34 @@ class CustomDense(Layer):
         return config
 
 
+class CustomConv2D(Layer):
+
+    def __init__(self, filters, kernel_size, strides=(1, 1), padding="SAME", name="CustomConv2D"):
+        super().__init__(name=name)
+        self.filters = filters
+        self.kernel_size = kernel_size if isinstance(kernel_size, tuple) else (kernel_size, kernel_size)
+        self.strides = strides if isinstance(strides, tuple) else (strides, strides)
+        self.padding = padding.upper()
+
+    def build(self, input_shape):
+
+        in_channel = input_shape[-1]
+        kh, kw = self.kernel_size
+
+        self.kernel = self.add_weight(name="kernel", shape=(kh, kw, in_channel, self.filters), initializer="he_normal", trainable=True)
+
+        self.B = self.add_weight(name="BIAS", shape=(self.filters,), initializer="zeros", trainable=True)
+
+    def call(self, inputs):
+
+        conv_output = tf.nn.conv2d(inputs, self.kernel, strides=[1, self.strides[0], self.strides[1], 1], padding=self.padding)
+        output = tf.nn.bias_add(conv_output, self.B)
+
+        return output
+    
+    def get_config(self):
+        config = super().get_config()
+        config = config.update({"filters":self.filters, "kernel_size":self.kernel_size, "strides":self.strides, "padding":self.padding})
+        return config
+    
+    
