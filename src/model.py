@@ -120,6 +120,24 @@ class ImageEncoder(Layer):
        X = self.fc(X)
 
        return X
+
+
+class TabularEncoder(Layer):
+
+    def __init__(self, name="TabularEncoder"):
+        super().__init__(name=name)
+
+        self.fc1 = CustomDense(32)
+        self.relu1 = CustomRelu()
+
+        self.fc2 = CustomDense(64)
+        self.relu2 = CustomRelu()
+
+    def call(self, X):
+
+        X = self.relu1(self.fc1(X))
+        X = self.relu2(self.fc2(X))
+        return X
     
-     
+
     
