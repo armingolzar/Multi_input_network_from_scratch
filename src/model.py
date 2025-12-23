@@ -97,3 +97,29 @@ class CustomConcat(Layer):
         config.update({"axis":self.axis})
         return config
     
+
+class ImageEncoder(Layer):
+
+    def __init__(self, name="ImageEncoder"):
+        super().__init__(name=name)
+
+        self.conv1 = CustomConv2D(filters=32, kernel_size=(3, 3), strides=(1, 1), padding="SAME")
+        self.relu1 = CustomRelu()
+        
+        self.conv2 = CustomConv2D(filters=64, kernel_size=(3, 3), strides=(1, 1), padding="SAME")
+        self.relu2 = CustomRelu()
+        
+        self.flatten = CustomFlatten()
+        self.fc = CustomDense(128)
+
+    def call(self, X):
+
+       X = self.relu1(self.conv1(X))
+       X = self.relu2(self.conv2(X))
+       X = self.flatten(X)
+       X = self.fc(X)
+
+       return X
+    
+     
+    
