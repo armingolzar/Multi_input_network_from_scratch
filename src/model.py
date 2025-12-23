@@ -83,3 +83,17 @@ class CustomFlatten(Layer):
     def get_config(self):
         return super().get_config()
     
+class CustomConcat(Layer):
+
+    def __init__(self, axis=-1, name="CustomConcat"):
+        super().__init__(name=name)
+        self.axis = axis
+
+    def call(self, inputs):
+        return tf.concat(inputs, axis=self.axis)
+    
+    def get_config(self):
+        config = super().get_config()
+        config.update({"axis":self.axis})
+        return config
+    
