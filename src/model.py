@@ -12,6 +12,9 @@ class CustomRelu(Layer):
     def call(self, inputs):
         return tf.maximum(inputs, 0.0)
     
+    def get_config(self):
+        return super().get_config()
+    
 
 class CustomDense(Layer):
 
@@ -68,4 +71,15 @@ class CustomConv2D(Layer):
         config = config.update({"filters":self.filters, "kernel_size":self.kernel_size, "strides":self.strides, "padding":self.padding})
         return config
     
+class CustomFlatten(Layer):
+
+    def __init__(self, name="CustomFlatten"):
+        super().__init__(name=name)
+
+    def call(self, inputs):
+        batch_size = tf.shape(inputs)[0]
+        return tf.reshape(inputs, (batch_size, -1))
+    
+    def get_config(self):
+        return super().get_config()
     
