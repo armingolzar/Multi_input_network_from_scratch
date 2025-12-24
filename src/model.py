@@ -139,5 +139,31 @@ class TabularEncoder(Layer):
         X = self.relu2(self.fc2(X))
         return X
     
+class HousePriceCusomModel(Model):
 
+    def __init__(self, name="HousePriceCusomModel"):
+        super().__init__(name=name)
+
+        self.image_encoder = ImageEncoder()
+        self.tabular_encoder = TabularEncoder()
+
+        self.concat = CustomConcat(axis=-1)
+
+        self.fc1 = CustomDense(64)
+        self.relu = CustomRelu()
+        self.fc2 = CustomDense(1)
+
+    def call(self, inputs):
+        image, tabular = inputs
+
+        img_features = self.image_encoder(image)
+        tab_features = self.tabular_encoder(tabular)
+
+        fused = self.concat([img_features, tab_features])
+
+        X = self.relu(self.fc1(fused))
+        output = self.fc2(X)
+
+        return output
+    
     

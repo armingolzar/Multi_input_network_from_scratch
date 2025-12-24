@@ -84,11 +84,12 @@ def prerocess(tabular, bath, bed, kitch, front, label):
     bed = load_image(bed)
     kitch = load_image(kitch)
     front = load_image(front)
+    image = tf.concat([bath, bed, kitch, front], axis=-1)
 
     tabular = (tabular - tab_mean) / (tab_std + 1e-8)
     label = (label - label_min) / (label_range + 1e-8)
 
-    return {"tabular" : tabular, "bathroom" : bath, "bedroom" : bed, "kitchen" : kitch, "frontal" : front}, label
+    return (image, tabular), label
 
 # TF.DATA PIPLINES
 
