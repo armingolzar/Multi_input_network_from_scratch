@@ -22,3 +22,17 @@ def train_step(image, tabular, labels):
 
     train_loss_metric.update_state(loss)
 
+@tf.function
+def val_step(image, tabular, labels):
+    prediction = model((image, tabular), training=False)
+    loss = loss_fn(labels, prediction)
+
+    val_loss_metric.update_state(loss)
+
+for epoch in range(EPOCH):
+    print(f"\n Epoch {epoch + 1}/ {EPOCH}")
+
+    train_loss_metric.reset_state()
+    val_loss_metric.reset_state()
+
+    for (image, tabular), labels in tra_ds
