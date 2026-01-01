@@ -1,6 +1,6 @@
 import tensorflow as tf
 from tensorflow.keras.layers import Layer
-from tensorflow.kerase.models import Model 
+from tensorflow.keras.models import Model 
 from tensorflow.keras.losses import Loss
 
 
@@ -68,7 +68,7 @@ class CustomConv2D(Layer):
     
     def get_config(self):
         config = super().get_config()
-        config = config.update({"filters":self.filters, "kernel_size":self.kernel_size, "strides":self.strides, "padding":self.padding})
+        config.update({"filters":self.filters, "kernel_size":self.kernel_size, "strides":self.strides, "padding":self.padding})
         return config
     
 class CustomFlatten(Layer):
