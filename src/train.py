@@ -1,6 +1,7 @@
 import tensorflow as tf 
 from model import HousePriceCusomModel, SmoothL1Loss
 from data_loader import data_prepration
+from utils import training_curve_ctl
 
 EPOCH = 50
 
@@ -31,6 +32,8 @@ def val_step(image, tabular, labels):
 
 train_ds, test_ds = data_prepration()
 
+history = {"loss": [], "val_loss": []}
+
 for epoch in range(EPOCH):
     print(f"\n Epoch {epoch + 1}/ {EPOCH}")
 
@@ -43,4 +46,9 @@ for epoch in range(EPOCH):
     for (image, tabular), labels in test_ds:
         val_step(image, tabular, labels)
 
+    history["loss"].append(train_loss_metric.result().numpy())
+    history["val_loss"].append(val_loss_metric.result().numpy())
+
     print(f"Train Loss: {train_loss_metric.result():.5f}", "|", f"Val Loss: {val_loss_metric.result():.5f}")
+
+training_curve_ctl(history=history)

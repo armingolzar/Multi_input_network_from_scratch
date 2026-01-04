@@ -36,9 +36,6 @@ def training_curve(history):
 
 def training_curve_ctl(history):
 
-    acc = history["accuracy"]
-    val_acc = history["val_accuracy"]
-
     loss = history["loss"]
     val_loss = history["val_loss"]
     epochs = range(len(loss))
@@ -46,7 +43,6 @@ def training_curve_ctl(history):
     plt.figure(figsize=(10, 5))
     plt.subplot(1, 2, 1)
     plt.plot(epochs, loss, color="red", label="Training Loss")
-    plt.plot(epochs, val_loss, color="blue", label="Validation Loss")
     plt.title("Loss")
     plt.xlabel("Epoch")
     plt.ylabel("Loss")
@@ -54,11 +50,10 @@ def training_curve_ctl(history):
     plt.grid(True)
 
     plt.subplot(1, 2, 2)
-    plt.plot(epochs, acc, color="red", label="Training Accuracy")
-    plt.plot(epochs, val_acc, color="blue", label="Validation Accuracy")
-    plt.title("Accuracy")
+    plt.plot(epochs, val_loss, color="blue", label="Validation Loss")
+    plt.title("Val_loss")
     plt.xlabel("Epoch")
-    plt.ylabel("Accuracy")
+    plt.ylabel("Val_loss")
     plt.legend()
     plt.grid(True)
 
