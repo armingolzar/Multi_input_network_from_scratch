@@ -33,6 +33,7 @@ def val_step(image, tabular, labels):
 train_ds, test_ds = data_prepration()
 
 history = {"loss": [], "val_loss": []}
+best_val_accuracy = None
 
 for epoch in range(EPOCH):
     print(f"\n Epoch {epoch + 1}/ {EPOCH}")
@@ -48,6 +49,11 @@ for epoch in range(EPOCH):
 
     history["loss"].append(train_loss_metric.result().numpy())
     history["val_loss"].append(val_loss_metric.result().numpy())
+    
+    if (best_val_accuracy is None) or best_val_accuracy > val_loss_metric.result().numpy():
+        best_val_accuracy = val_loss_metric.result().numpy()
+        model.save("multi_input_house_scratch")
+        print("saved model with val_loss", best_val_accuracy)
 
     print(f"Train Loss: {train_loss_metric.result():.5f}", "|", f"Val Loss: {val_loss_metric.result():.5f}")
 
