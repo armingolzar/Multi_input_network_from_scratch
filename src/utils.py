@@ -25,7 +25,7 @@ def training_curve(history):
     plt.grid(True)
 
     plt.tight_layout()
-    plt.savefig(".\\assets\\Cifar10_training_curve.jpg")
+    plt.savefig("..\\assets\\multi_input_house_price_callback.jpg")
     plt.show()
 
 #######################################################################################

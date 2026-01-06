@@ -72,14 +72,31 @@ class CustomConv2D(Layer):
         return config
     
 class CustomFlatten(Layer):
+    def __init__(self, name="CustomFlatten", **kwargs):
+        super().__init__(name=name, **kwargs)
+        self.feature_dim = None
 
-    def __init__(self, name="CustomFlatten"):
-        super().__init__(name=name)
+    def build(self, input_shape):
+        # input_shape = (batch, H, W, C)
+        feature_dim = 1
+        for dim in input_shape[1:]:
+            if dim is None:
+                raise ValueError(
+                    "CustomFlatten requires static spatial dimensions"
+                )
+            feature_dim *= dim
+
+        self.feature_dim = feature_dim
+
+        # # 🔴 CRITICAL LINE
+        # super().build(input_shape)
 
     def call(self, inputs):
-        batch_size = tf.shape(inputs)[0]
-        return tf.reshape(inputs, (batch_size, -1))
-    
+        return tf.reshape(inputs, (-1, self.feature_dim))
+
+    def compute_output_shape(self, input_shape):
+        return (input_shape[0], self.feature_dim)
+
     def get_config(self):
         return super().get_config()
     
@@ -186,6 +203,6 @@ class SmoothL1Loss(Loss):
         config.update({"delta":self.delta})
         return config
     
-    
+
     
     
