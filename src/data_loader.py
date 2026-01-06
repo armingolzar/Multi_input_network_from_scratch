@@ -67,6 +67,13 @@ def data_prepration():
     label_max = tf.reduce_max(train_labels)
     label_range = tf.where(label_max - label_min == 0, 1.0, label_max - label_min)
 
+    np.save("../models/stats/tab_mean.npy", tab_mean.numpy())
+    np.save("../models/stats/tab_std.npy", tab_std.numpy())
+
+
+    np.save("../models/stats/label_min.npy", label_min.numpy())
+    np.save("../models/stats/label_range.npy", label_range.numpy())
+
     # print(tab_mean, "\n")
     # print(tab_std, "\n")
     # print(label_min, "\n")

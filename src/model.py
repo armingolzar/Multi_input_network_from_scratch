@@ -88,9 +88,6 @@ class CustomFlatten(Layer):
 
         self.feature_dim = feature_dim
 
-        # # 🔴 CRITICAL LINE
-        # super().build(input_shape)
-
     def call(self, inputs):
         return tf.reshape(inputs, (-1, self.feature_dim))
 
