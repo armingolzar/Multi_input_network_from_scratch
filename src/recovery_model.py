@@ -179,6 +179,37 @@ class TabularEncoder(Layer):
         return x
 
     
+class HousePriceModel(Model):
+
+    def __init__(self, name="HousePriceModel"):
+        super().__init__(name=name)
+
+        self.image_encoder = ImageEncoder()
+        self.tabular_encoder = TabularEncoder()
+
+        self.concat = CustomConcat()
+        self.dense1 = CustomDense(64)
+        self.relu1 = CustomRelu()
+        self.dense2 = CustomDense(32)
+        self.relu2 = CustomRelu()
+        self.dense3 = CustomDense(1)
+
+    def call(self, inputs):
+
+        image, tabular = inputs
+        image_featuremap = self.image_encoder(image)
+        tabular_featuremap = self.tabular_encoder(tabular)
+
+        featuremap = self.concat([image_featuremap, tabular_featuremap])
+        x = self.relu1(self.dense1(featuremap))
+        x = self.relu2(self.dense2(x))
+        x = self.dense3(x)
+
+        return x
+
+
+
+
 
 
 
