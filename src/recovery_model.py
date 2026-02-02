@@ -160,6 +160,25 @@ class ImageEncoder(Layer):
         return x
 
 
+class TabularEncoder(Layer):
+    def __init__(self, name="TabularEncoder"):
+        super().__init__(name=name)
+
+        self.dense1 = CustomDense(16)
+        self.relu1 = CustomRelu()
+        self.dense2 = CustomDense(32)
+        self.relu2 = CustomRelu()
+        self.dense3 = CustomDense(64)
+
+    def call(self, inputs):
+
+        x = self.relu1(self.dense1(inputs))
+        x = self.relu2(self.dense2(x))
+        x = self.dense3(x)
+
+        return x
+
+    
 
 
 
