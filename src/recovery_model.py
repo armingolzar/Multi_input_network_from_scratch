@@ -206,6 +206,29 @@ class HousePriceModel(Model):
         x = self.dense3(x)
 
         return x
+    
+class CustomL1Smooth(Loss):
+
+    def __init__(self, delta=1.0, reduction=tf.keras.losses.Reduction.AUTO,  name="CustomL1Smooth"):
+        super().__init__(reduction=reduction ,name=name)
+        self.delta = delta
+
+    def call(self, y_pred, y_true):
+        error = y_pred - y_true
+        abs_error = tf.abs(error)
+
+        quadratic = tf.minimum(abs_error, self.delta)
+        linear = abs_error - quadratic
+        loss = 0.5 * tf.square(quadratic) + self.delta * linear
+        return tf.reduce_mean(loss)
+    
+    def get_config(self):
+        config = super().get_config()
+        config.update({"delta" : self.delta})
+        return config
+
+
+
 
 
 
