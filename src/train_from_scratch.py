@@ -16,7 +16,7 @@ val_loss_metric = tf.keras.metrics.Mean(name="val_loss")
 def train_step(image, tabular, labels):
     with tf.GradientTape() as tape:
         predictions = model((image, tabular), training=True)
-        loss = loss_fn(labels, predictions)
+        loss = loss_fn(predictions, labels)
 
     gradients = tape.gradient(loss, model.trainable_variables)
     optimizer.apply_gradients(zip(gradients, model.trainable_variables))
@@ -26,7 +26,7 @@ def train_step(image, tabular, labels):
 @tf.function
 def val_step(image, tabular, labels):
     prediction = model((image, tabular), training=False)
-    loss = loss_fn(labels, prediction)
+    loss = loss_fn(prediction, labels)
 
     val_loss_metric.update_state(loss)
 
